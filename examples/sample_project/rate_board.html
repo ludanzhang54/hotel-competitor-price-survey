@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Competitor rate board</title>
+<style>
+:root{
+ --ink:#1f2328; --mute:#6b7280; --faint:#9aa0a6; --line:#e8eaed; --hair:#f1f3f5;
+ --up:#2e7d51; --down:#c4544c; --home:#2f6fed; --homebg:#f5f9ff; --suite:#c77a1e;
+ --f1:20px; --f2:15px; --f3:13.5px; --f4:12.5px; --f5:11px;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:24px 28px 44px;background:#f6f7f9;color:var(--ink);
+font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;
+font-size:var(--f4);line-height:1.5;-webkit-font-smoothing:antialiased}
+h1{font-size:var(--f1);margin:0 0 5px;font-weight:600;letter-spacing:-.2px}
+h2{font-size:var(--f2);margin:0 0 12px;font-weight:600}
+h3{font-size:var(--f4);margin:0 0 8px;font-weight:600;color:var(--ink)}
+.meta{color:var(--mute);font-size:var(--f4);margin-bottom:18px}
+.meta b{color:var(--ink);font-weight:600}
+.panel{background:#fff;border:1px solid var(--line);border-radius:10px;
+padding:16px 18px 13px;margin-bottom:16px}
+.panel.lead{border-color:#cfe0fd;box-shadow:0 1px 0 #e8f0fe}
+.panel.lead h2{color:var(--home)}
+.h2sub{font-size:var(--f5);font-weight:400;color:var(--faint);margin-left:10px}
+.note{color:var(--faint);font-size:var(--f5);margin-top:10px;line-height:1.75}
+.note b{color:var(--mute);font-weight:600}
+.empty{color:var(--faint);font-size:var(--f4);padding:4px 0 8px}
+.meh{font-style:normal;color:var(--home);font-weight:600}
+/* your four tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:2px 0}
+.tile{background:#fbfcfd;border:1px solid var(--hair);border-radius:8px;padding:12px 14px}
+.tb{font-size:var(--f1);font-weight:600;line-height:1.3;font-variant-numeric:tabular-nums}
+.tb.up{color:var(--suite)}.tb.down{color:var(--up)}
+.tl{font-size:var(--f5);color:var(--faint);margin-top:2px}
+/* small tables */
+table.mini{border-collapse:separate;border-spacing:0;width:100%}
+table.mini th,table.mini td{padding:7px 10px;font-size:var(--f4);text-align:right;
+vertical-align:middle;border-bottom:1px solid var(--hair);white-space:nowrap;
+font-variant-numeric:tabular-nums}
+table.mini thead th{color:var(--faint);font-weight:400;font-size:var(--f5);
+border-bottom:1px solid var(--line)}
+table.mini thead th:first-child{text-align:left}
+table.mini tbody th{text-align:left;font-weight:600;color:var(--ink)}
+table.mini tr:last-child th,table.mini tr:last-child td{border-bottom:none}
+table.mini tr.me th,table.mini tr.me td{background:var(--homebg)}
+table.mini td.pos{color:var(--suite)}
+table.mini td.neg{color:var(--up)}
+table.mini td.flat{color:var(--faint)}
+table.wide td.c{color:var(--mute)}
+table.wide td.ev{color:var(--mute);font-variant-numeric:normal}
+table.wide b{font-weight:600}
+table.wide b.up{color:var(--up)}
+table.wide b.down{color:var(--down)}
+.when{color:var(--faint);font-size:var(--f5);margin-left:6px}
+/* dates to watch */
+.cl{list-style:none;margin:0;padding:0}
+.cl li{padding:9px 0;border-bottom:1px solid var(--hair)}
+.cl li:last-child{border-bottom:none}
+.cl li>b{display:block;font-size:var(--f3);font-weight:600;margin-bottom:2px}
+.cl span b{display:inline;font-size:inherit;color:var(--ink);font-weight:600}
+.cl span{color:var(--mute);font-size:var(--f4);font-variant-numeric:tabular-nums}
+.wl{list-style:none;margin:0;padding:0}
+.wl li{display:flex;align-items:center;gap:10px;padding:7px 0;
+border-bottom:1px solid var(--hair);font-size:var(--f4)}
+.wl li:last-child{border-bottom:none}
+.wd{width:94px;flex:none;font-weight:600}
+.wt{flex:none;width:76px;text-align:center;font-size:var(--f5);border-radius:4px;
+padding:2px 0;font-weight:600}
+.wt.comp_down{color:var(--up);background:#eaf5ef}
+.wt.comp_up{color:var(--suite);background:#fdf3e6}
+.wt.home_sold{color:var(--down);background:#fcecea}
+.wt.home_high{color:var(--home);background:#eef4fe}
+.wx{color:var(--mute);font-variant-numeric:tabular-nums}
+/* position panel */
+.poslist{display:flex;flex-direction:column}
+.phead{display:flex;align-items:flex-end;gap:14px;padding:0 0 7px;
+border-bottom:1px solid var(--line);font-size:var(--f5);color:var(--faint)}
+.phead .rk{width:40px;text-align:center}
+.phead .hin{width:180px}
+.phead .sp{text-align:center}
+.phead .track{background:none;height:auto}
+.phead .pv{width:78px;text-align:right}
+.phead .pi{width:74px;text-align:right}
+.phead .mvv{width:118px;text-align:right}
+.prow{display:flex;align-items:center;gap:14px;padding:9px 0;
+border-bottom:1px solid var(--hair)}
+.prow:last-child{border-bottom:none}
+.prow.me{background:var(--homebg);margin:0 -10px;padding-left:10px;padding-right:10px;
+border-radius:6px}
+.rk{width:40px;flex:none;font-size:var(--f3);font-weight:600;text-align:center;
+font-variant-numeric:tabular-nums}
+.rk em{font-style:normal;font-size:var(--f5);color:var(--faint);font-weight:400}
+.hin{width:180px;flex:none;display:flex;flex-direction:column;line-height:1.35;
+white-space:nowrap}
+.hname{font-size:var(--f3);font-weight:600}
+.hsub{font-size:var(--f5);color:var(--faint)}
+.hdot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--suite);margin-left:6px;vertical-align:2px}
+.sp{width:70px;height:22px;flex:none;display:block}
+.track{flex:1;position:relative;height:14px;border-radius:3px;min-width:120px;
+background:linear-gradient(to right,#f1f7f4 0 50%,#fdf6ec 50% 100%)}
+.bar{position:absolute;top:0;height:14px;border-radius:3px;background:#4e9d74}
+.bar.pos{background:#d8933e}
+.bar.flat{background:#aab2bb}
+.bar.over::after{content:"";position:absolute;top:50%;width:0;height:0;
+border-top:4px solid transparent;border-bottom:4px solid transparent}
+.bar.pos.over::after{right:-5px;transform:translateY(-50%);border-left:5px solid #d8933e}
+.bar.neg.over::after{left:-5px;transform:translateY(-50%);border-right:5px solid #4e9d74}
+.mid{position:absolute;left:50%;top:-4px;height:22px;width:0;
+border-left:1px solid #aab2bb;transform:translateX(-.5px)}
+.pv{width:78px;flex:none;text-align:right;font-size:var(--f3);font-weight:600;
+font-variant-numeric:tabular-nums}
+.pi{width:74px;flex:none;text-align:right;font-size:var(--f3);font-weight:600;
+font-variant-numeric:tabular-nums}
+.pi.neg{color:var(--up)} .pi.pos{color:var(--suite)} .pi.flat{color:var(--faint)}
+.mvv{width:118px;flex:none;text-align:right;font-size:var(--f5);color:var(--faint);
+white-space:nowrap;font-variant-numeric:tabular-nums}
+/* structure columns */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+/* line chart */
+.lgb{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px}
+.lgb span{display:inline-flex;align-items:center;gap:6px;font-size:var(--f4);
+color:var(--mute);cursor:pointer;user-select:none}
+.lgb span.off{opacity:.3}
+.lgb i{width:16px;height:3px;border-radius:2px;display:inline-block}
+.chartbox{position:relative}
+svg#chart{display:block;width:100%;height:auto;overflow:visible}
+.tip{position:absolute;pointer-events:none;background:rgba(255,255,255,.98);
+border:1px solid #d9dde2;border-radius:8px;box-shadow:0 4px 18px rgba(20,30,50,.12);
+padding:9px 11px;font-size:var(--f4);min-width:180px;display:none;z-index:9}
+.tip .td{font-weight:600;margin-bottom:6px}
+.tip .tr{display:flex;justify-content:space-between;gap:14px;padding:1.5px 0;color:var(--mute)}
+.tip .tr b{color:var(--ink);font-variant-numeric:tabular-nums}
+.tip .tr i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
+/* calendar */
+.cmon{margin-top:10px}
+.cmon h3{font-size:var(--f4);margin:0 0 8px}
+.cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cwh{font-size:var(--f5);color:var(--faint);text-align:center;padding-bottom:2px}
+.cpad{min-height:72px}
+.cc{min-height:72px;border-radius:7px;padding:6px 9px;display:flex;flex-direction:column}
+.cd{font-size:var(--f5);color:#8a9099}
+.evdot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#7b5ea7;margin-left:5px;vertical-align:1px}
+table.day th.evh,table.day td.evc{text-align:left;white-space:normal;min-width:150px;color:#5b4a7a}
+.cb{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.3;margin-top:1px}
+.cb.so{font-size:var(--f3);color:#b3453c}
+.cv{font-size:var(--f5);margin-top:auto;font-variant-numeric:tabular-nums}
+.w3{background:#f6cdc6}.w3 .cv{color:#9d352b}
+.w2{background:#fbdcc9}.w2 .cv{color:#9c5420}
+.w1{background:#fdf4e4}.w1 .cv{color:#8d7033}
+.k1{background:#e1f0e5}.k1 .cv{color:#35724c}
+.k2{background:#c9e4d3}.k2 .cv{color:#1f5c39}
+.cs{background:#f3e3e1}.cs .cv{color:#9a6b66}
+.cna{background:#fafbfc}.cna .cv{color:#b8bcc1}
+.coff{opacity:.4}
+.ckey{display:flex;gap:12px;flex-wrap:wrap;align-items:center;font-size:var(--f5);
+color:var(--faint);margin-bottom:2px}
+.ckey span{display:inline-flex;align-items:center;gap:5px}
+.ckey i{width:20px;height:11px;border-radius:3px;display:inline-block}
+/* daily price table */
+/* .tablewrap is retired: it breaks sticky headers */
+table.day{border-collapse:separate;border-spacing:0;width:100%;background:#fff;
+border-radius:10px}
+.bare table.day{border:1px solid var(--line)}
+table.day th,table.day td{padding:7px 13px;text-align:right;vertical-align:middle;
+border-bottom:1px solid var(--hair);white-space:nowrap;font-variant-numeric:tabular-nums}
+table.day thead th{position:sticky;top:0;z-index:3;background:#fff;
+font-size:var(--f5);font-weight:600;color:var(--mute);text-align:right;
+padding-top:11px;padding-bottom:9px;border-bottom:1px solid var(--line);
+box-shadow:0 1px 0 var(--line)}
+table.day thead th.homecol{color:var(--home)}
+table.day thead th:first-child{left:0;z-index:5;text-align:left}
+table.day tbody th.dt{text-align:left;font-weight:600;font-size:var(--f4);
+background:#fff;position:sticky;left:0;z-index:2}
+table.day tbody th.dt em{font-style:normal;color:var(--faint);font-weight:400;
+font-size:var(--f5);margin-left:5px}
+table.day tbody th.dt em.tight{color:var(--suite);font-weight:600}
+tr.tightrow th.dt,tr.tightrow td{background:#fffdfa}
+td.p{font-size:var(--f3);font-weight:600}
+td.homecol,th.homecol{background:var(--homebg)}
+tr.tightrow td.homecol{background:#f6f9fe}
+td.miss{color:var(--faint);font-weight:400;font-size:var(--f4);text-align:center}
+td.soldout{background:#fdeeed;color:var(--down);font-weight:600}
+td.noprice{background:#f3f4f6;color:var(--faint)}
+tr.tightrow td.soldout{background:#fdeae8}
+td.miss .was{display:block;font-size:var(--f5);color:var(--faint);margin-top:1px;
+font-weight:400}
+td.davg{color:var(--mute);font-size:var(--f4);border-left:1px solid var(--line)}
+td.davg .cn{font-style:normal;font-size:var(--f5);color:var(--faint);margin-left:4px}
+td.davg.thin{color:#c3c7cc}
+td.hgap{font-size:var(--f4);font-weight:600}
+td.hgap.pos{color:var(--suite)}td.hgap.neg{color:var(--up)}td.hgap.flat{color:var(--faint)}
+td.hgap.thin{color:#c3c7cc;font-weight:400}
+th.davg-h{border-left:1px solid var(--line)}
+.num{display:block;line-height:1.35}
+.out{border-bottom:1px dotted #c3c7cc;padding-bottom:1px}
+.d{display:block;font-size:var(--f5);font-weight:400;line-height:1.3}
+.d.up{color:var(--up)} .d.down{color:var(--down)}
+/* footer notes */
+.foot{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.fbox{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+.fbox ul{margin:0;padding-left:16px}
+.fbox li{color:var(--faint);font-size:var(--f5);line-height:1.75;margin-bottom:5px}
+.fbox li:last-child{margin-bottom:0}
+.fbox b{color:var(--mute)}
+.fbox i.sw{display:inline-block;width:9px;height:9px;border-radius:2px;
+margin-right:5px;vertical-align:-1px}
+@media(max-width:1100px){.tiles{grid-template-columns:repeat(2,1fr)}
+.two{grid-template-columns:1fr}.foot{grid-template-columns:1fr}.sp{display:none}}
+@media print{
+ body{background:#fff;padding:0 0 10px}
+ .panel,.fbox{border-color:#d9dde2}
+ table.day thead th{position:static;box-shadow:none}
+ table.day tbody th.dt{position:static}
+ table.day thead{display:table-header-group}
+ table.day tbody tr{break-inside:avoid}
+ .tiles,.tile,.fbox,.prow,.half,h2,.cmon{break-inside:avoid}
+ h2,h3{break-after:avoid}
+ .chartbox{break-inside:avoid}
+ .noprint{display:none}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style></head><body>
+<h1>Competitor rate board</h1>
+<div class="meta">Collected <b>2026-11-26 09:00</b> · compared with previous run <b>Nov 25 09:00</b> (24 hours apart) · covers <b>2026-12-01 ~ 2026-12-30</b> (30 stay dates, 1 night, 1 room) · prices in <b>USD</b> · <b>147 prices</b> · <b>2 sold out</b></div>
+<div class="panel"><h2>Where you stand now<span class="h2sub">4 competitors · definitions in the footer</span></h2><div class="tiles"><div class="tile"><div class="tb ">236</div><div class="tl">Your median price</div></div><div class="tile"><div class="tb ">216</div><div class="tl">Comp-set median (4 hotels)</div></div><div class="tile"><div class="tb up">9% above</div><div class="tl">You vs comp set</div></div><div class="tile"><div class="tb ">1 day / 0 days</div><div class="tl">Days you are cheapest / days sold out</div></div></div></div>
+<div class="panel"><h2>What changed since the previous run<span class="h2sub">by hotel · previous run Nov 25 09:00 (24 hours apart)</span></h2><table class="mini wide"><thead><tr><th>Hotel</th><th>Changes</th><th>Biggest rise</th><th>Biggest drop</th><th>Newly sold out</th><th>Reopened</th></tr></thead><tbody><tr class="me"><th><i class="meh">You</i></th><td class="c">28 days</td><td><b class="up">+6</b><span class="when">12/25</span></td><td><b class="down">-17</b><span class="when">12/3</span></td><td class="ev">—</td><td class="ev">—</td></tr><tr class=""><th>Central Park Hotel</th><td class="c">30 days</td><td><b class="up">+22</b><span class="when">12/25</span></td><td><b class="down">-3</b><span class="when">12/26</span></td><td class="ev">—</td><td class="ev">—</td></tr><tr class=""><th>Marina Bay Suites</th><td class="c">26 days</td><td><b class="up">+10</b><span class="when">12/14</span></td><td><b class="down">-16</b><span class="when">12/25</span></td><td class="ev">—</td><td class="ev">—</td></tr><tr class=""><th>Old Town Inn</th><td class="c">25 days</td><td><b class="up">+8</b><span class="when">12/1</span></td><td><b class="down">-7</b><span class="when">12/24</span></td><td class="ev">—</td><td class="ev">—</td></tr><tr class=""><th>Seaside Resort</th><td class="c">28 days</td><td><b class="up">+15</b><span class="when">12/11</span></td><td><b class="down">-10</b><span class="when">12/2</span></td><td class="ev">—</td><td class="ev">—</td></tr></tbody></table><div class="note">"Changes" = how many stay dates have a different price from the previous run. The rise and drop columns show the biggest single day; every change is in the small print of the daily table below. A change is ignored when either end is only a high-price room type.</div></div>
+<div class="panel">
+<h2>Position of each hotel<span class="h2sub">compared day by day, ranked by average daily rank</span></h2>
+<div class="phead"><span class="rk">Rank</span><span class="hin">Hotel · price range</span><span class="sp">Trend</span><span class="track">Relative position (centre line = median of the others, full bar = +/-20%)</span><span class="pv">Median price</span><span class="pi">vs the others</span><span class="mvv">Moves</span></div>
+<div class="poslist">
+<div class="prow"><span class="rk">1<em>/5</em></span><div class="hin"><span class="hname">Old Town Inn</span><span class="hsub">147 ~ 252 · cheapest 29 days</span></div><svg class="sp" viewBox="0 0 66 22" width="66" height="22"><path d="M0.0,18.5 L2.3,18.7 L4.6,18.9 L6.8,16.1 L9.1,16.5 L11.4,18.7 L13.7,19.0 L15.9,18.9 L18.2,18.6 L20.5,18.5 L22.8,16.1 M27.3,18.7 L29.6,18.9 L31.9,19.0 L34.1,18.8 L36.4,18.6 L38.7,16.2 L41.0,16.2 L43.2,18.5 L45.5,18.9 L47.8,19.0 L50.1,18.8 L52.3,15.6 L54.6,12.4 L56.9,12.2 L59.2,15.3 L61.4,15.5 L63.7,15.6 L66.0,15.1" fill="none" stroke="#c5221f" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg><div class="track"><i class="mid"></i><div class="bar neg over" style="right:50%;width:50.0%"></div></div><span class="pv">154</span><span class="pi neg">31% below</span><span class="mvv">25 chg · 17 prices</span></div>
+<div class="prow me"><span class="rk">2<em>/5</em></span><div class="hin"><span class="hname"><i class="meh">You</i></span><span class="hsub">191 ~ 346 · cheapest 1 day</span></div><svg class="sp" viewBox="0 0 66 22" width="66" height="22"><path d="M0.0,15.6 L2.3,15.7 L4.6,16.0 L6.8,12.9 L9.1,12.9 L11.4,15.5 L13.7,15.6 L15.9,15.4 L18.2,16.2 L20.5,15.6 L22.8,12.5 L25.0,12.2 L27.3,15.9 L29.6,12.9 L31.9,13.8 L34.1,13.3 L36.4,13.2 L38.7,9.0 L41.0,12.2 L43.2,15.6 L45.5,15.5 L47.8,15.5 L50.1,15.9 L52.3,10.9 L54.6,6.2 L56.9,6.2 L59.2,11.3 L61.4,10.8 L63.7,10.7 L66.0,11.1" fill="none" stroke="#2f6fed" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></svg><div class="track"><i class="mid"></i><div class="bar pos" style="left:50%;width:23.1%"></div></div><span class="pv">236</span><span class="pi pos">9% above</span><span class="mvv">28 chg · 22 prices</span></div>
+<div class="prow"><span class="rk">3<em>/5</em></span><div class="hin"><span class="hname">Central Park Hotel</span><span class="hsub">204 ~ 350 · cheapest 0 days</span></div><svg class="sp" viewBox="0 0 66 22" width="66" height="22"><path d="M0.0,14.5 L2.3,15.0 L4.6,15.3 L6.8,12.2 L9.1,11.4 L11.4,15.3 L13.7,14.8 L15.9,14.9 L18.2,15.1 L20.5,14.7 L22.8,12.2 L25.0,12.1 L27.3,15.0 L29.6,15.3 L31.9,14.7 L34.1,15.1 L36.4,15.2 L38.7,12.2 L41.0,11.6 L43.2,15.0 L45.5,14.8 L47.8,14.8 L50.1,14.7 L52.3,10.0 L54.6,5.9 L56.9,6.5 L59.2,10.5 L61.4,10.8 L63.7,11.0 L66.0,10.5" fill="none" stroke="#e8710a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg><div class="track"><i class="mid"></i><div class="bar neg" style="right:50%;width:10.1%"></div></div><span class="pv">214</span><span class="pi neg">4% below</span><span class="mvv">30 chg · 22 prices</span></div>
+<div class="prow"><span class="rk">4<em>/5</em></span><div class="hin"><span class="hname">Marina Bay Suites<i class="hdot" title="1 more days only had a suite or other high-price room type; excluded"></i></span><span class="hsub">209 ~ 357 · cheapest 0 days</span></div><svg class="sp" viewBox="0 0 66 22" width="66" height="22"><path d="M0.0,14.5 L2.3,14.7 L4.6,14.5 L6.8,11.0 L9.1,11.6 L11.4,14.5 L13.7,14.2 L15.9,14.3 L18.2,14.4 L20.5,14.7 L22.8,10.9 L25.0,11.1 L27.3,14.7 L29.6,14.4 L31.9,14.9 L34.1,14.4 L36.4,15.0 L38.7,11.1 M43.2,14.8 L45.5,14.4 L47.8,14.6 L50.1,14.5 L52.3,9.3 L54.6,5.5 L56.9,5.8 L59.2,10.0 L61.4,9.6 L63.7,10.1 L66.0,10.2" fill="none" stroke="#188038" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg><div class="track"><i class="mid"></i><div class="bar flat" style="right:50%;width:0.9%"></div></div><span class="pv">219</span><span class="pi flat"></span><span class="mvv">26 chg · 23 prices</span></div>
+<div class="prow"><span class="rk">5<em>/5</em></span><div class="hin"><span class="hname">Seaside Resort</span><span class="hsub">227 ~ 395 · cheapest 0 days</span></div><svg class="sp" viewBox="0 0 66 22" width="66" height="22"><path d="M0.0,13.3 L2.3,13.8 L4.6,13.7 L6.8,10.0 L9.1,9.6 L11.4,13.5 L13.7,13.4 L15.9,13.3 L18.2,13.6 L20.5,13.3 L22.8,9.3 L25.0,10.2 L27.3,13.1 L29.6,13.3 L31.9,13.8 L34.1,13.6 L36.4,13.4 L38.7,9.3 L41.0,9.9 L43.2,13.5 L45.5,13.2 L47.8,13.3 L50.1,13.1 L52.3,8.3 L54.6,3.0 L56.9,3.6 L59.2,8.0 L61.4,7.9" fill="none" stroke="#8a3ffc" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg><div class="track"><i class="mid"></i><div class="bar pos" style="left:50%;width:29.2%"></div></div><span class="pv">236</span><span class="pi pos">12% above</span><span class="mvv">28 chg · 21 prices</span></div></div>
+<div class="note">"vs the others" = this hotel’s median price divided by the median price of <b>all the other hotels</b>. A bar to the left = cheaper, to the right = more expensive; the full bar is fixed at +/-20%, so today’s board and tomorrow’s can be compared. All trend lines share one vertical scale. "Moves" = days changed in this run (chg) · different prices used in the window (prices). <b>More expensive does not mean worse, and cheaper does not mean better.</b></div>
+</div>
+<div class="panel"><h2>Price structure<span class="h2sub">the same data from two angles</span></h2><div class="two"><div class="half"><h3>Weekday vs weekend</h3><table class="mini"><thead><tr><th></th><th>You</th><th>Comp set</th><th>You vs comp set</th></tr></thead><tbody><tr><th>Weekdays (Sun-Thu)</th><td>202</td><td>214</td><td class="neg">6% below</td></tr><tr><th>Weekend (Fri, Sat)</th><td>252</td><td>270</td><td class="neg">7% below</td></tr></tbody></table><div class="note">This compares you with the comp set within the same period, not your weekend with your own weekday.</div></div><div class="half"><h3>Days until stay</h3><table class="mini"><thead><tr><th></th><th>You</th><th>Comp set</th><th>You vs comp set</th></tr></thead><tbody><tr><th>Next 7 days</th><td>199</td><td>216</td><td class="neg">8% below</td></tr><tr><th>Days 8 to 14</th><td>203</td><td>218</td><td class="neg">7% below</td></tr><tr><th>After 14 days</th><td>260</td><td>233</td><td class="pos">11% above</td></tr></tbody></table><div class="note">Prices only. <b>Do not compare sold-out rates across stay dates</b>: the closer a date is to today, the longer it has been on sale, so it sells out more easily, which says nothing about demand.</div></div></div></div>
+<div class="panel">
+<h2>Lowest price trend</h2>
+<div class="lgb" id="lgb"></div>
+<div class="chartbox"><svg id="chart" viewBox="0 0 1120 400"></svg>
+<div class="tip" id="tip"></div></div>
+<div class="note noprint">Hover over any day to list every hotel’s price. Click a name in the legend to hide that hotel. Your line is drawn thicker. A purple marker at the top = a city event that day.</div>
+</div>
+<div class="panel"><h2>Calendar<span class="h2sub">large figure = your price that day, line below = how far above or below the comp-set median; the cell colour follows that percentage</span></h2><div class="ckey"><span><i class="w3"></i>Above by more than 20%</span><span><i class="w2"></i>Above by 10-20%</span><span><i class="w1"></i>Above by 0-10%</span><span><i class="k1"></i>Below by 0-10%</span><span><i class="k2"></i>Below by more than 10%</span><span><i class="cs"></i>You are sold out</span></div><div class="cmon"><h3>Dec 2026</h3><div class="cgrid"><div class="cwh">Mon</div><div class="cwh">Tue</div><div class="cwh">Wed</div><div class="cwh">Thu</div><div class="cwh">Fri</div><div class="cwh">Sat</div><div class="cwh">Sun</div><div class="cpad"></div><div class="cc k1" title="Harbour View Hotel 199; Central Park Hotel 216; Marina Bay Suites 217; Old Town Inn 154; Seaside Resort 235 | Comp-set median 216 | Your occupancy 70%"><span class="cd">1</span><span class="cb">199</span><span class="cv">−8% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 198; Central Park Hotel 209; Marina Bay Suites 213; Old Town Inn 151; Seaside Resort 228 | Comp-set median 211 | Your occupancy 92%"><span class="cd">2</span><span class="cb">198</span><span class="cv">−6% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 193; Central Park Hotel 205; Marina Bay Suites 216; Old Town Inn 149; Seaside Resort 229 | Comp-set median 210 | Your occupancy 89%"><span class="cd">3</span><span class="cb">193</span><span class="cv">−8% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 241; Central Park Hotel 253; Marina Bay Suites 271; Old Town Inn 192; Seaside Resort 287 | Comp-set median 262 | Your occupancy 63%"><span class="cd">4</span><span class="cb">241</span><span class="cv">−8% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 241; Central Park Hotel 265; Marina Bay Suites 262; Old Town Inn 186; Seaside Resort 293 | Comp-set median 264 | Your occupancy 78%"><span class="cd">5</span><span class="cb">241</span><span class="cv">−9% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 202; Central Park Hotel 205; Marina Bay Suites 217; Old Town Inn 151; Seaside Resort 232 | Comp-set median 211 | Your occupancy 93%"><span class="cd">6</span><span class="cb">202</span><span class="cv">−4% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 199; Central Park Hotel 212; Marina Bay Suites 221; Old Town Inn 147; Seaside Resort 234 | Comp-set median 216 | Your occupancy 85%"><span class="cd">7</span><span class="cb">199</span><span class="cv">−8% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 203; Central Park Hotel 211; Marina Bay Suites 220; Old Town Inn 149; Seaside Resort 236 | Comp-set median 216 | Your occupancy 95%"><span class="cd">8</span><span class="cb">203</span><span class="cv">−6% vs comp set</span></div><div class="cc k2" title="Harbour View Hotel 191; Central Park Hotel 208; Marina Bay Suites 218; Old Town Inn 153; Seaside Resort 231 | Comp-set median 213 | Your occupancy 92% | Event: Harbour Music Festival"><span class="cd">9<span class="evdot" title="Event"></span></span><span class="cb">191</span><span class="cv">−10% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 199; Central Park Hotel 213; Marina Bay Suites 214; Old Town Inn 154; Seaside Resort 236 | Comp-set median 214 | Your occupancy 59% | Event: Harbour Music Festival"><span class="cd">10<span class="evdot" title="Event"></span></span><span class="cb">199</span><span class="cv">−7% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 248; Central Park Hotel 252; Marina Bay Suites 273; Old Town Inn 192; Seaside Resort 297 | Comp-set median 262 | Your occupancy 93% | Event: Harbour Music Festival"><span class="cd">11<span class="evdot" title="Event"></span></span><span class="cb">248</span><span class="cv">−6% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 252; Central Park Hotel 254; Marina Bay Suites 270; Old Town Inn No price; Seaside Resort 283 | Comp-set median 270 | Your occupancy 55%"><span class="cd">12</span><span class="cb">252</span><span class="cv">−7% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 195; Central Park Hotel 209; Marina Bay Suites 214; Old Town Inn 151; Seaside Resort 238 | Comp-set median 212 | Your occupancy 85%"><span class="cd">13</span><span class="cb">195</span><span class="cv">−8% vs comp set</span></div><div class="cc w2" title="Harbour View Hotel 241; Central Park Hotel 204; Marina Bay Suites 219; Old Town Inn 148; Seaside Resort 235 | Comp-set median 212 | Your occupancy 71%"><span class="cd">14</span><span class="cb">241</span><span class="cv">+14% vs comp set</span></div><div class="cc w1" title="Harbour View Hotel 228; Central Park Hotel 214; Marina Bay Suites 210; Old Town Inn 147; Seaside Resort 227 | Comp-set median 212 | Your occupancy 90%"><span class="cd">15</span><span class="cb">228</span><span class="cv">+8% vs comp set</span></div><div class="cc w2" title="Harbour View Hotel 235; Central Park Hotel 207; Marina Bay Suites 218; Old Town Inn 150; Seaside Resort 231 | Comp-set median 212 | Your occupancy 69%"><span class="cd">16</span><span class="cb">235</span><span class="cv">+11% vs comp set</span></div><div class="cc w2" title="Harbour View Hotel 237; Central Park Hotel 206; Marina Bay Suites 209; Old Town Inn 153; Seaside Resort 234 | Comp-set median 208 | Your occupancy 67%"><span class="cd">17</span><span class="cb">237</span><span class="cv">+14% vs comp set</span></div><div class="cc w2" title="Harbour View Hotel 302; Central Park Hotel 253; Marina Bay Suites 270; Old Town Inn 191; Seaside Resort 297 | Comp-set median 262 | Your occupancy 85%"><span class="cd">18</span><span class="cb">302</span><span class="cv">+15% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 252; Central Park Hotel 261; Marina Bay Suites No price; Old Town Inn 190; Seaside Resort 288 | Comp-set median 261 | Your occupancy 89% | Event: Trade Fair"><span class="cd">19<span class="evdot" title="Event"></span></span><span class="cb">252</span><span class="cv">−3% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 200; Central Park Hotel 209; Marina Bay Suites 212; Old Town Inn 154; Seaside Resort 233 | Comp-set median 210 | Your occupancy 90%"><span class="cd">20</span><span class="cb">200</span><span class="cv">−5% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 201; Central Park Hotel 212; Marina Bay Suites 218; Old Town Inn 148; Seaside Resort 237 | Comp-set median 215 | Your occupancy 85%"><span class="cd">21</span><span class="cb">201</span><span class="cv">−7% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 202; Central Park Hotel 212; Marina Bay Suites 215; Old Town Inn 147; Seaside Resort 236 | Comp-set median 214 | Your occupancy 80%"><span class="cd">22</span><span class="cb">202</span><span class="cv">−5% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 195; Central Park Hotel 214; Marina Bay Suites 216; Old Town Inn 150; Seaside Resort 238 | Comp-set median 215 | Your occupancy 95%"><span class="cd">23</span><span class="cb">195</span><span class="cv">−9% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 272; Central Park Hotel 287; Marina Bay Suites 298; Old Town Inn 200; Seaside Resort 313 | Comp-set median 292 | Your occupancy 64%"><span class="cd">24</span><span class="cb">272</span><span class="cv">−7% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 346; Central Park Hotel 350; Marina Bay Suites 357; Old Town Inn 249; Seaside Resort 395 | Comp-set median 354 | Your occupancy 69%"><span class="cd">25</span><span class="cb">346</span><span class="cv">−2% vs comp set</span></div><div class="cc w1" title="Harbour View Hotel 346; Central Park Hotel 340; Marina Bay Suites 352; Old Town Inn 252; Seaside Resort 385 | Comp-set median 346 | Your occupancy 95%"><span class="cd">26</span><span class="cb">346</span><span class="cv">0% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 267; Central Park Hotel 279; Marina Bay Suites 287; Old Town Inn 204; Seaside Resort 317 | Comp-set median 283 | Your occupancy 64%"><span class="cd">27</span><span class="cb">267</span><span class="cv">−6% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 274; Central Park Hotel 274; Marina Bay Suites 293; Old Town Inn 202; Seaside Resort 319 | Comp-set median 284 | Your occupancy 88%"><span class="cd">28</span><span class="cb">274</span><span class="cv">−3% vs comp set</span></div><div class="cc w1" title="Harbour View Hotel 275; Central Park Hotel 271; Marina Bay Suites 285; Old Town Inn 200; Seaside Resort Sold out | Comp-set median 271"><span class="cd">29</span><span class="cb">275</span><span class="cv">+1% vs comp set</span></div><div class="cc k1" title="Harbour View Hotel 270; Central Park Hotel 279; Marina Bay Suites 284; Old Town Inn 207; Seaside Resort Sold out | Comp-set median 279"><span class="cd">30</span><span class="cb">270</span><span class="cv">−3% vs comp set</span></div><div class="cc cna coff"><span class="cd">31</span></div></div></div><div class="note">Hover over a cell to see every hotel’s price that day. <b>Red only means you are above the comp set; it does not mean bad.</b></div></div>
+<div class="bare"><table class="day">
+<thead><tr><th>Stay date</th><th class="homecol">You</th><th class="">Central Park Hotel</th><th class="">Marina Bay Suites</th><th class="">Old Town Inn</th><th class="">Seaside Resort</th><th class="davg-h">Comp-set median</th><th class="davg-h">You vs comp set</th><th class="davg-h">Your occupancy</th><th class="evh">Events</th></tr></thead>
+<tbody><tr><th class="dt">Dec 1 <em>Tue</em></th><td class="p homecol"><span class="num">199</span><span class="d down">-5</span></td><td class="p"><span class="num">216</span><span class="d up">+21</span></td><td class="p"><span class="num">217</span><span class="d up">+2</span></td><td class="p"><span class="num">154</span><span class="d up">+8</span></td><td class="p"><span class="num">235</span><span class="d up">+9</span></td><td class="davg">216</td><td class="hgap neg">-8%</td><td class="davg">70%</td><td class="evc"></td></tr><tr><th class="dt">Dec 2 <em>Wed</em></th><td class="p homecol"><span class="num">198</span><span class="d down">-8</span></td><td class="p"><span class="num">209</span><span class="d up">+14</span></td><td class="p"><span class="num">213</span><span class="d down">-4</span></td><td class="p"><span class="num">151</span><span class="d up">+3</span></td><td class="p"><span class="num">228</span><span class="d down">-10</span></td><td class="davg">211</td><td class="hgap neg">-6%</td><td class="davg">92%</td><td class="evc"></td></tr><tr><th class="dt">Dec 3 <em>Thu</em></th><td class="p homecol"><span class="num">193</span><span class="d down">-17</span></td><td class="p"><span class="num">205</span><span class="d up">+4</span></td><td class="p"><span class="num">216</span><span class="d up">+1</span></td><td class="p"><span class="num">149</span><span class="d down">-5</span></td><td class="p"><span class="num">229</span><span class="d up">+1</span></td><td class="davg">210</td><td class="hgap neg">-8%</td><td class="davg">89%</td><td class="evc"></td></tr><tr><th class="dt">Dec 4 <em>Fri</em></th><td class="p homecol"><span class="num">241</span><span class="d down">-15</span></td><td class="p"><span class="num">253</span><span class="d up">+8</span></td><td class="p"><span class="num">271</span></td><td class="p"><span class="num">192</span><span class="d up">+2</span></td><td class="p"><span class="num">287</span><span class="d down">-7</span></td><td class="davg">262</td><td class="hgap neg">-8%</td><td class="davg">63%</td><td class="evc"></td></tr><tr><th class="dt">Dec 5 <em>Sat</em></th><td class="p homecol"><span class="num">241</span><span class="d down">-15</span></td><td class="p"><span class="num">265</span><span class="d up">+21</span></td><td class="p"><span class="num">262</span><span class="d down">-6</span></td><td class="p"><span class="num">186</span><span class="d up">+3</span></td><td class="p"><span class="num">293</span><span class="d up">+7</span></td><td class="davg">264</td><td class="hgap neg">-9%</td><td class="davg">78%</td><td class="evc"></td></tr><tr><th class="dt">Dec 6 <em>Sun</em></th><td class="p homecol"><span class="num">202</span><span class="d down">-4</span></td><td class="p"><span class="num">205</span><span class="d up">+12</span></td><td class="p"><span class="num">217</span><span class="d up">+5</span></td><td class="p"><span class="num">151</span><span class="d up">+3</span></td><td class="p"><span class="num">232</span><span class="d down">-5</span></td><td class="davg">211</td><td class="hgap neg">-4%</td><td class="davg">93%</td><td class="evc"></td></tr><tr><th class="dt">Dec 7 <em>Mon</em></th><td class="p homecol"><span class="num">199</span><span class="d down">-2</span></td><td class="p"><span class="num">212</span><span class="d up">+19</span></td><td class="p"><span class="num">221</span></td><td class="p"><span class="num">147</span><span class="d up">+1</span></td><td class="p"><span class="num">234</span><span class="d up">+1</span></td><td class="davg">216</td><td class="hgap neg">-8%</td><td class="davg">85%</td><td class="evc"></td></tr><tr><th class="dt">Dec 8 <em>Tue</em></th><td class="p homecol"><span class="num">203</span><span class="d down">-2</span></td><td class="p"><span class="num">211</span><span class="d up">+12</span></td><td class="p"><span class="num">220</span><span class="d down">-1</span></td><td class="p"><span class="num">149</span><span class="d up">+3</span></td><td class="p"><span class="num">236</span><span class="d up">+7</span></td><td class="davg">216</td><td class="hgap neg">-6%</td><td class="davg">95%</td><td class="evc"></td></tr><tr><th class="dt">Dec 9 <em>Wed</em></th><td class="p homecol"><span class="num">191</span><span class="d down">-16</span></td><td class="p"><span class="num">208</span><span class="d up">+13</span></td><td class="p"><span class="num">218</span><span class="d down">-1</span></td><td class="p"><span class="num">153</span></td><td class="p"><span class="num">231</span><span class="d up">+4</span></td><td class="davg">213</td><td class="hgap neg">-10%</td><td class="davg">92%</td><td class="evc">Harbour Music Festival</td></tr><tr><th class="dt">Dec 10 <em>Thu</em></th><td class="p homecol"><span class="num">199</span><span class="d down">-10</span></td><td class="p"><span class="num">213</span><span class="d up">+14</span></td><td class="p"><span class="num">214</span><span class="d down">-4</span></td><td class="p"><span class="num">154</span><span class="d up">+7</span></td><td class="p"><span class="num">236</span><span class="d up">+1</span></td><td class="davg">214</td><td class="hgap neg">-7%</td><td class="davg">59%</td><td class="evc">Harbour Music Festival</td></tr><tr><th class="dt">Dec 11 <em>Fri</em></th><td class="p homecol"><span class="num">248</span><span class="d down">-2</span></td><td class="p"><span class="num">252</span><span class="d up">+6</span></td><td class="p"><span class="num">273</span><span class="d up">+7</span></td><td class="p"><span class="num">192</span><span class="d up">+4</span></td><td class="p"><span class="num">297</span><span class="d up">+15</span></td><td class="davg">262</td><td class="hgap neg">-6%</td><td class="davg">93%</td><td class="evc">Harbour Music Festival</td></tr><tr><th class="dt">Dec 12 <em>Sat</em></th><td class="p homecol"><span class="num">252</span><span class="d down">-1</span></td><td class="p"><span class="num">254</span><span class="d up">+7</span></td><td class="p"><span class="num">270</span><span class="d up">+6</span></td><td class="miss noprice">No price</td><td class="p"><span class="num">283</span><span class="d down">-2</span></td><td class="davg">270<i class="cn">3 hotels</i></td><td class="hgap neg">-7%</td><td class="davg">55%</td><td class="evc"></td></tr><tr><th class="dt">Dec 13 <em>Sun</em></th><td class="p homecol"><span class="num">195</span><span class="d down">-5</span></td><td class="p"><span class="num">209</span><span class="d up">+6</span></td><td class="p"><span class="num">214</span><span class="d up">+2</span></td><td class="p"><span class="num">151</span><span class="d up">+4</span></td><td class="p"><span class="num">238</span><span class="d up">+5</span></td><td class="davg">212</td><td class="hgap neg">-8%</td><td class="davg">85%</td><td class="evc"></td></tr><tr><th class="dt">Dec 14 <em>Mon</em></th><td class="p homecol"><span class="num">241</span><span class="d down">-5</span></td><td class="p"><span class="num">204</span><span class="d up">+6</span></td><td class="p"><span class="num">219</span><span class="d up">+10</span></td><td class="p"><span class="num">148</span><span class="d down">-4</span></td><td class="p"><span class="num">235</span><span class="d down">-2</span></td><td class="davg">212</td><td class="hgap pos">+14%</td><td class="davg">71%</td><td class="evc"></td></tr><tr><th class="dt">Dec 15 <em>Tue</em></th><td class="p homecol"><span class="num">228</span><span class="d down">-17</span></td><td class="p"><span class="num">214</span><span class="d up">+15</span></td><td class="p"><span class="num">210</span><span class="d down">-8</span></td><td class="p"><span class="num">147</span></td><td class="p"><span class="num">227</span><span class="d down">-7</span></td><td class="davg">212</td><td class="hgap pos">+8%</td><td class="davg">90%</td><td class="evc"></td></tr><tr><th class="dt">Dec 16 <em>Wed</em></th><td class="p homecol"><span class="num">235</span></td><td class="p"><span class="num">207</span><span class="d up">+5</span></td><td class="p"><span class="num">218</span><span class="d up">+4</span></td><td class="p"><span class="num">150</span><span class="d down">-1</span></td><td class="p"><span class="num">231</span><span class="d up">+2</span></td><td class="davg">212</td><td class="hgap pos">+11%</td><td class="davg">69%</td><td class="evc"></td></tr><tr><th class="dt">Dec 17 <em>Thu</em></th><td class="p homecol"><span class="num">237</span><span class="d down">-12</span></td><td class="p"><span class="num">206</span><span class="d up">+12</span></td><td class="p"><span class="num">209</span><span class="d down">-10</span></td><td class="p"><span class="num">153</span><span class="d up">+6</span></td><td class="p"><span class="num">234</span><span class="d down">-4</span></td><td class="davg">208</td><td class="hgap pos">+14%</td><td class="davg">67%</td><td class="evc"></td></tr><tr><th class="dt">Dec 18 <em>Fri</em></th><td class="p homecol"><span class="num">302</span><span class="d down">-9</span></td><td class="p"><span class="num">253</span><span class="d up">+11</span></td><td class="p"><span class="num">270</span><span class="d up">+3</span></td><td class="p"><span class="num">191</span><span class="d up">+4</span></td><td class="p"><span class="num">297</span><span class="d up">+12</span></td><td class="davg">262</td><td class="hgap pos">+15%</td><td class="davg">85%</td><td class="evc"></td></tr><tr><th class="dt">Dec 19 <em>Sat</em></th><td class="p homecol"><span class="num">252</span><span class="d down">-7</span></td><td class="p"><span class="num">261</span><span class="d up">+7</span></td><td class="p"><span class="num out" title="Only a suite or other high-price room type was left that day; excluded from the median and the chart">2,100</span></td><td class="p"><span class="num">190</span><span class="d up">+6</span></td><td class="p"><span class="num">288</span><span class="d up">+6</span></td><td class="davg">261<i class="cn">3 hotels</i></td><td class="hgap neg">-3%</td><td class="davg">89%</td><td class="evc">Trade Fair</td></tr><tr><th class="dt">Dec 20 <em>Sun</em></th><td class="p homecol"><span class="num">200</span><span class="d down">-6</span></td><td class="p"><span class="num">209</span><span class="d up">+7</span></td><td class="p"><span class="num">212</span><span class="d down">-7</span></td><td class="p"><span class="num">154</span><span class="d up">+6</span></td><td class="p"><span class="num">233</span><span class="d up">+4</span></td><td class="davg">210</td><td class="hgap neg">-5%</td><td class="davg">90%</td><td class="evc"></td></tr><tr><th class="dt">Dec 21 <em>Mon</em></th><td class="p homecol"><span class="num">201</span></td><td class="p"><span class="num">212</span><span class="d up">+17</span></td><td class="p"><span class="num">218</span><span class="d up">+9</span></td><td class="p"><span class="num">148</span><span class="d down">-6</span></td><td class="p"><span class="num">237</span><span class="d up">+6</span></td><td class="davg">215</td><td class="hgap neg">-7%</td><td class="davg">85%</td><td class="evc"></td></tr><tr><th class="dt">Dec 22 <em>Tue</em></th><td class="p homecol"><span class="num">202</span><span class="d up">+3</span></td><td class="p"><span class="num">212</span><span class="d up">+18</span></td><td class="p"><span class="num">215</span><span class="d up">+4</span></td><td class="p"><span class="num">147</span><span class="d down">-6</span></td><td class="p"><span class="num">236</span><span class="d up">+10</span></td><td class="davg">214</td><td class="hgap neg">-5%</td><td class="davg">80%</td><td class="evc"></td></tr><tr><th class="dt">Dec 23 <em>Wed</em></th><td class="p homecol"><span class="num">195</span><span class="d down">-10</span></td><td class="p"><span class="num">214</span><span class="d up">+13</span></td><td class="p"><span class="num">216</span><span class="d down">-4</span></td><td class="p"><span class="num">150</span><span class="d up">+2</span></td><td class="p"><span class="num">238</span><span class="d up">+11</span></td><td class="davg">215</td><td class="hgap neg">-9%</td><td class="davg">95%</td><td class="evc"></td></tr><tr><th class="dt">Dec 24 <em>Thu</em></th><td class="p homecol"><span class="num">272</span><span class="d up">+3</span></td><td class="p"><span class="num">287</span><span class="d up">+13</span></td><td class="p"><span class="num">298</span><span class="d up">+8</span></td><td class="p"><span class="num">200</span><span class="d down">-7</span></td><td class="p"><span class="num">313</span><span class="d up">+2</span></td><td class="davg">292</td><td class="hgap neg">-7%</td><td class="davg">64%</td><td class="evc"></td></tr><tr><th class="dt">Dec 25 <em>Fri</em></th><td class="p homecol"><span class="num">346</span><span class="d up">+6</span></td><td class="p"><span class="num">350</span><span class="d up">+22</span></td><td class="p"><span class="num">357</span><span class="d down">-16</span></td><td class="p"><span class="num">249</span></td><td class="p"><span class="num">395</span><span class="d up">+2</span></td><td class="davg">354</td><td class="hgap neg">-2%</td><td class="davg">69%</td><td class="evc"></td></tr><tr><th class="dt">Dec 26 <em>Sat</em></th><td class="p homecol"><span class="num">346</span><span class="d up">+5</span></td><td class="p"><span class="num">340</span><span class="d down">-3</span></td><td class="p"><span class="num">352</span><span class="d down">-9</span></td><td class="p"><span class="num">252</span></td><td class="p"><span class="num">385</span><span class="d up">+2</span></td><td class="davg">346</td><td class="hgap flat">0%</td><td class="davg">95%</td><td class="evc"></td></tr><tr><th class="dt">Dec 27 <em>Sun</em></th><td class="p homecol"><span class="num">267</span><span class="d down">-2</span></td><td class="p"><span class="num">279</span><span class="d up">+6</span></td><td class="p"><span class="num">287</span><span class="d up">+4</span></td><td class="p"><span class="num">204</span><span class="d down">-3</span></td><td class="p"><span class="num">317</span><span class="d up">+6</span></td><td class="davg">283</td><td class="hgap neg">-6%</td><td class="davg">64%</td><td class="evc"></td></tr><tr><th class="dt">Dec 28 <em>Mon</em></th><td class="p homecol"><span class="num">274</span><span class="d down">-2</span></td><td class="p"><span class="num">274</span><span class="d up">+5</span></td><td class="p"><span class="num">293</span></td><td class="p"><span class="num">202</span><span class="d down">-2</span></td><td class="p"><span class="num">319</span><span class="d down">-2</span></td><td class="davg">284</td><td class="hgap neg">-3%</td><td class="davg">88%</td><td class="evc"></td></tr><tr><th class="dt">Dec 29 <em>Tue</em></th><td class="p homecol"><span class="num">275</span><span class="d down">-1</span></td><td class="p"><span class="num">271</span><span class="d up">+5</span></td><td class="p"><span class="num">285</span><span class="d down">-10</span></td><td class="p"><span class="num">200</span><span class="d up">+2</span></td><td class="miss soldout">Sold out</td><td class="davg">271<i class="cn">3 hotels</i></td><td class="hgap pos">+1%</td><td class="davg thin">—</td><td class="evc"></td></tr><tr><th class="dt">Dec 30 <em>Wed</em></th><td class="p homecol"><span class="num">270</span><span class="d down">-12</span></td><td class="p"><span class="num">279</span><span class="d up">+18</span></td><td class="p"><span class="num">284</span><span class="d down">-2</span></td><td class="p"><span class="num">207</span><span class="d down">-1</span></td><td class="miss soldout">Sold out</td><td class="davg">279<i class="cn">3 hotels</i></td><td class="hgap neg">-3%</td><td class="davg thin">—</td><td class="evc"></td></tr></tbody>
+</table></div>
+<div class="foot"><div class="fbox"><h3>Definitions</h3><ul><li>The whole page uses the <b>median</b>, not the mean (a mean is pulled by one extreme price)</li><li>"Comp-set median" = the middle value of the hotels with a normal price that day; the count is shown when it is short, and "—" appears when fewer than 2 hotels have a price</li><li>Every percentage is one number on the page divided by another, so you can check it</li><li>Lowest bookable price under the same search conditions every run (1 room, 1 night, 1 adult); dates roll forward</li></ul></div><div class="fbox"><h3>Price cells</h3><ul><li>Normal prices have no background; the small figure below = change from the previous run, <b style="color:#2e7d51">+</b> higher, <b style="color:#c4544c">−</b> lower, blank if unchanged</li><li>A figure with a <b>grey dotted underline</b> = only a suite or other high-price room type was left (above 2.5 times that hotel’s own median, applied once there are at least 10 normal days); excluded from the median and the chart</li><li><b style="color:#c4544c">Sold out</b> = no rooms left, with the previous run’s price below; <b>No price</b> = nothing was read. Neither is ever filled in</li><li>A <b style="color:#c77a1e">"N sold out"</b> tag next to a date = two or more hotels sold out that day</li></ul></div><div class="fbox"><h3>Hotels</h3><ul><li>You = Harbour View Hotel; Central Park Hotel = Central Park Hotel; Marina Bay Suites = Marina Bay Suites; Old Town Inn = Old Town Inn; Seaside Resort = Seaside Resort</li><li>Add or remove a hotel and every percentage is recalculated</li></ul></div></div>
+<script>
+const D = {"hotels": ["Harbour View Hotel", "Central Park Hotel", "Marina Bay Suites", "Old Town Inn", "Seaside Resort"], "names": ["Harbour View Hotel", "Central Park Hotel", "Marina Bay Suites", "Old Town Inn", "Seaside Resort"], "home": "Harbour View Hotel", "dates": ["2026-12-01", "2026-12-02", "2026-12-03", "2026-12-04", "2026-12-05", "2026-12-06", "2026-12-07", "2026-12-08", "2026-12-09", "2026-12-10", "2026-12-11", "2026-12-12", "2026-12-13", "2026-12-14", "2026-12-15", "2026-12-16", "2026-12-17", "2026-12-18", "2026-12-19", "2026-12-20", "2026-12-21", "2026-12-22", "2026-12-23", "2026-12-24", "2026-12-25", "2026-12-26", "2026-12-27", "2026-12-28", "2026-12-29", "2026-12-30"], "series": {"Harbour View Hotel": [199, 198, 193, 241, 241, 202, 199, 203, 191, 199, 248, 252, 195, 241, 228, 235, 237, 302, 252, 200, 201, 202, 195, 272, 346, 346, 267, 274, 275, 270], "Central Park Hotel": [216, 209, 205, 253, 265, 205, 212, 211, 208, 213, 252, 254, 209, 204, 214, 207, 206, 253, 261, 209, 212, 212, 214, 287, 350, 340, 279, 274, 271, 279], "Marina Bay Suites": [217, 213, 216, 271, 262, 217, 221, 220, 218, 214, 273, 270, 214, 219, 210, 218, 209, 270, null, 212, 218, 215, 216, 298, 357, 352, 287, 293, 285, 284], "Old Town Inn": [154, 151, 149, 192, 186, 151, 147, 149, 153, 154, 192, null, 151, 148, 147, 150, 153, 191, 190, 154, 148, 147, 150, 200, 249, 252, 204, 202, 200, 207], "Seaside Resort": [235, 228, 229, 287, 293, 232, 234, 236, 231, 236, 297, 283, 238, 235, 227, 231, 234, 297, 288, 233, 237, 236, 238, 313, 395, 385, 317, 319, null, null]}, "raw": {"Harbour View Hotel": [199, 198, 193, 241, 241, 202, 199, 203, 191, 199, 248, 252, 195, 241, 228, 235, 237, 302, 252, 200, 201, 202, 195, 272, 346, 346, 267, 274, 275, 270], "Central Park Hotel": [216, 209, 205, 253, 265, 205, 212, 211, 208, 213, 252, 254, 209, 204, 214, 207, 206, 253, 261, 209, 212, 212, 214, 287, 350, 340, 279, 274, 271, 279], "Marina Bay Suites": [217, 213, 216, 271, 262, 217, 221, 220, 218, 214, 273, 270, 214, 219, 210, 218, 209, 270, 2100, 212, 218, 215, 216, 298, 357, 352, 287, 293, 285, 284], "Old Town Inn": [154, 151, 149, 192, 186, 151, 147, 149, 153, 154, 192, null, 151, 148, 147, 150, 153, 191, 190, 154, 148, 147, 150, 200, 249, 252, 204, 202, 200, 207], "Seaside Resort": [235, 228, 229, 287, 293, 232, 234, 236, 231, 236, 297, 283, 238, 235, 227, 231, 234, 297, 288, 233, 237, 236, 238, 313, 395, 385, 317, 319, null, null]}, "suite": {"Harbour View Hotel": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], "Central Park Hotel": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], "Marina Bay Suites": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false], "Old Town Inn": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false], "Seaside Resort": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]}, "colors": ["#2f6fed", "#e8710a", "#188038", "#c5221f", "#8a3ffc"], "events": {"8": "Harbour Music Festival", "9": "Harbour Music Festival", "10": "Harbour Music Festival", "18": "Trade Fair"}, "weeks": ["Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"], "lo": 100, "hi": 500, "step": 100};
+</script>
+<script>
+(function(){
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var W=1120,H=400,padL=52,padR=18,padT=16,padB=42;
+var svg=document.getElementById('chart'),tip=document.getElementById('tip');
+var H0=D.hotels,NM=D.names,DATES=D.dates,SER=D.series,COL=D.colors,LO=D.lo,HI=D.hi;
+var HOME=D.home;
+var PW=W-padL-padR,PH=H-padT-padB;
+var n=DATES.length,step=n>1?PW/(n-1):PW;
+var hidden={};
+function X(i){return padL+i*step;}
+function Y(v){return padT+PH-((v-LO)/(HI-LO))*PH;}
+var NS='http://www.w3.org/2000/svg';
+function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+var g=el('g',{});svg.appendChild(g);
+var stepv=D.step;
+for(var v=LO;v<=HI;v+=stepv){
+  var y=Y(v);
+  g.appendChild(el('line',{x1:padL,y1:y,x2:W-padR,y2:y,stroke:v===LO?'#c9ced4':'#eef0f3','stroke-width':1}));
+  var t=el('text',{x:padL-9,y:y+4,'text-anchor':'end','font-size':11,fill:'#9aa0a6'});
+  t.textContent=v.toLocaleString();g.appendChild(t);
+}
+DATES.forEach(function(d,i){
+  var x=X(i),m=+d.split('-')[1],dd=+d.split('-')[2];
+  var we=(D.weeks[i]==='Fri'||D.weeks[i]==='Sat');
+  if(we){g.appendChild(el('rect',{x:x-step/2,y:padT,width:step,height:PH,fill:'#fafbfd'}));}
+  g.appendChild(el('line',{x1:x,y1:padT+PH,x2:x,y2:padT+PH+4,stroke:'#d6dae0'}));
+  if(i%2===0||i===n-1){
+    var t=el('text',{x:x,y:padT+PH+19,'text-anchor':'middle','font-size':10.5,fill:'#7a7f85'});
+    t.textContent=m+'/'+dd;g.appendChild(t);
+    var w=el('text',{x:x,y:padT+PH+32,'text-anchor':'middle','font-size':9.5,
+      fill:we?'#b06000':'#b0b4b9'});
+    w.textContent=D.weeks[i];g.appendChild(w);
+  }
+});
+Object.keys(D.events||{}).forEach(function(k){
+  var x=X(+k);
+  var tri=el('path',{d:'M'+(x-5)+','+padT+' L'+(x+5)+','+padT+' L'+x+','+(padT+8)+' Z',fill:'#7b5ea7'});
+  var tt=el('title',{});tt.textContent=D.events[k];tri.appendChild(tt);g.appendChild(tri);
+});
+var lines=[];
+H0.forEach(function(h,hi){
+  var arr=SER[h],path='',pen=false,isHome=(NM[hi]===HOME&&HOME);
+  arr.forEach(function(v,i){
+    if(v===null){pen=false;return;}
+    var x=X(i),y=Y(v);
+    path+=(pen?'L':'M')+x.toFixed(1)+','+y.toFixed(1)+' ';pen=true;
+  });
+  var gg=el('g',{});
+  gg.appendChild(el('path',{d:path,fill:'none',stroke:COL[hi],
+    'stroke-width':isHome?3:1.8,'stroke-linejoin':'round','stroke-linecap':'round',
+    opacity:isHome?1:.72}));
+  arr.forEach(function(v,i){
+    if(v===null){
+      gg.appendChild(el('circle',{cx:X(i),cy:padT+PH-5,r:2.6,fill:'none',
+        stroke:'#c4c9cf','stroke-width':1.4}));
+      return;
+    }
+    gg.appendChild(el('circle',{cx:X(i),cy:Y(v),r:isHome?3.4:2.6,fill:'#fff',
+      stroke:COL[hi],'stroke-width':isHome?2.2:1.6,opacity:isHome?1:.85}));
+  });
+  g.appendChild(gg);lines.push(gg);
+});
+var vline=el('line',{x1:0,y1:padT,x2:0,y2:padT+PH,stroke:'#9aa0a6','stroke-width':1,
+  'stroke-dasharray':'3 3',opacity:0});g.appendChild(vline);
+svg.addEventListener('mousemove',function(ev){
+  var box=svg.getBoundingClientRect();
+  var px=(ev.clientX-box.left)/box.width*W;
+  var i=Math.round((px-padL)/step);
+  if(i<0||i>=n){tip.style.display='none';vline.setAttribute('opacity',0);return;}
+  var x=X(i);
+  vline.setAttribute('x1',x);vline.setAttribute('x2',x);vline.setAttribute('opacity',1);
+  var d=DATES[i],m=+d.split('-')[1],dd=+d.split('-')[2];
+  var html='<div class="td">'+D.weeks[i]+' '+MON[m-1]+' '+dd+'</div>';
+  H0.forEach(function(h,hi){
+    if(hidden[h])return;
+    var v=SER[h][i],rv=D.raw[h][i],su=D.suite[h][i];
+    var val;
+    if(v!==null){val='<b>'+v.toLocaleString()+'</b>';}
+    else if(su&&rv){val='<b style="color:#b06000">'+rv.toLocaleString()+'</b>'+
+      '<span style="color:#b06000;font-size:11px"> high-price room</span>';}
+    else{val='<b style="color:#b0b4b9">sold out</b>';}
+    var nm=(NM[hi]===HOME&&HOME)?'You':NM[hi];
+    html+='<div class="tr"><span><i style="background:'+COL[hi]+'"></i>'+nm+'</span>'+val+'</div>';
+  });
+  if(D.events&&D.events[i]){html+='<div class="tr"><span style="color:#7b5ea7">Event</span><b>'+D.events[i]+'</b></div>';}
+  tip.innerHTML=html;tip.style.display='block';
+  var left=(x/W)*box.width+12, tw=tip.offsetWidth, bw=box.width;
+  if(left+tw>bw-4)left=(x/W)*box.width-tw-12;
+  tip.style.left=Math.max(0,left)+'px';
+  var ty=(ev.clientY-box.top)-10;tip.style.top=Math.max(0,ty)+'px';
+});
+svg.addEventListener('mouseleave',function(){tip.style.display='none';vline.setAttribute('opacity',0);});
+var lg=document.getElementById('lgb');
+H0.forEach(function(h,hi){
+  var s=document.createElement('span');
+  s.innerHTML='<i style="background:'+COL[hi]+'"></i>'+
+    ((NM[hi]===HOME&&HOME)?'<b style="color:#2f6fed">You</b>':NM[hi]);
+  s.onclick=function(){
+    hidden[h]=!hidden[h];
+    s.className=hidden[h]?'off':'';
+    lines[hi].style.display=hidden[h]?'none':'';
+  };
+  lg.appendChild(s);
+});
+})();
+</script>
+</body></html>

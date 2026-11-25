@@ -1,0 +1,151 @@
+captured_at,hotel,channel,stay_date,price,currency,status
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-01,204,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-02,206,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-03,210,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-04,256,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-05,256,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-06,206,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-07,201,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-08,205,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-09,207,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-10,209,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-11,250,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-12,253,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-13,200,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-14,246,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-15,245,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-16,235,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-17,249,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-18,311,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-19,259,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-20,206,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-21,201,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-22,199,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-23,205,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-24,269,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-25,340,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-26,341,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-27,269,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-28,276,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-29,276,USD,ok
+2026-11-25 09:00:00,Harbour View Hotel,Example Channel,2026-12-30,282,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-01,215,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-02,217,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-03,215,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-04,271,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-05,268,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-06,212,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-07,221,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-08,221,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-09,219,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-10,218,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-11,266,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-12,264,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-13,212,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-14,209,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-15,218,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-16,214,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-17,219,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-18,267,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-19,2100,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-20,219,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-21,209,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-22,211,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-23,220,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-24,290,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-25,373,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-26,361,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-27,283,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-28,293,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-29,295,USD,ok
+2026-11-25 09:00:00,Marina Bay Suites,Example Channel,2026-12-30,286,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-01,146,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-02,148,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-03,154,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-04,190,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-05,183,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-06,148,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-07,146,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-08,146,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-09,153,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-10,147,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-11,188,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-12,,USD,no_price
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-13,147,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-14,152,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-15,147,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-16,151,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-17,147,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-18,187,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-19,184,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-20,148,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-21,154,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-22,153,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-23,148,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-24,207,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-25,249,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-26,252,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-27,207,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-28,204,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-29,198,USD,ok
+2026-11-25 09:00:00,Old Town Inn,Example Channel,2026-12-30,208,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-01,195,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-02,195,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-03,201,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-04,245,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-05,244,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-06,193,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-07,193,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-08,199,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-09,195,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-10,199,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-11,246,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-12,247,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-13,203,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-14,198,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-15,199,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-16,202,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-17,194,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-18,242,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-19,254,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-20,202,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-21,195,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-22,194,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-23,201,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-24,274,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-25,328,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-26,343,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-27,273,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-28,269,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-29,266,USD,ok
+2026-11-25 09:00:00,Central Park Hotel,Example Channel,2026-12-30,261,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-01,226,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-02,238,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-03,228,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-04,294,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-05,286,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-06,237,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-07,233,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-08,229,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-09,227,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-10,235,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-11,282,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-12,285,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-13,233,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-14,237,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-15,234,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-16,229,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-17,238,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-18,285,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-19,282,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-20,229,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-21,231,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-22,226,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-23,227,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-24,311,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-25,393,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-26,383,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-27,311,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-28,321,USD,ok
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-29,,USD,soldout
+2026-11-25 09:00:00,Seaside Resort,Example Channel,2026-12-30,,USD,soldout

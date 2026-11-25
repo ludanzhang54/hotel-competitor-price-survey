@@ -1,0 +1,7 @@
+ctrip_state.json
+*_state.json
+__pycache__/
+*.pyc
+.DS_Store
+my_project/
+*_hotels.csv.bak
