@@ -90,6 +90,9 @@ four-star hotel in a tier-3 city into a profitable one.
 - WeChat: Oriental_Horizon
 - WhatsApp: +65 86796635
 - Email: ludanzhang54@gmail.com
+- YouTube (Chinese-language videos and podcast): https://www.youtube.com/@TheHotelBusiness
+- Podcast, English: *The Hotel Business* - https://rss.com/podcasts/the-hotel-business/
+- Podcast, Chinese: *张小姐看酒店生意* (search the name on Ximalaya or Xiaoyuzhou)
 
 ## Licence
 
