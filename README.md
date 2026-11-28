@@ -51,10 +51,10 @@ python scripts/make_board.py --data-dir my_project --home "Your Hotel"
 
 **Ctrip (mainland site)** through the built-in collector in `connectors/ctrip/` (author-tested).
 The board reads a simple CSV (`docs/DATA_FORMAT.md`), so you can also import prices from another source yourself,
-but only Ctrip is supported and tested. Use one channel per board and the same search conditions every run.
+but only Ctrip is supported. Use one channel per board and the same search conditions every run.
 Details and the reasons are in `docs/CHANNELS.md`.
 
-**Want another channel, or more than one?** Just say so in your task when you run the skill (for example, "collect Trip.com instead" or "add Agoda"). Your AI assistant can adapt the collector or build the CSV for that channel. The built-in collector and the tested setup are for Ctrip; for other channels, check the site's terms first.
+**Want another channel, or more than one?** Just say so in your task when you run the skill (for example, "collect Trip.com instead" or "add Agoda"). Your AI assistant can adapt the collector or build the CSV for that channel. The built-in collector is for Ctrip; for other channels, check the site's terms first.
 
 ## Risks, in plain words
 
@@ -89,7 +89,7 @@ Read `CONTRIBUTING.md`. Questions and ideas: open an issue.
 - Email: ludanzhang54@gmail.com
 - YouTube (Chinese-language videos and podcast): https://www.youtube.com/@TheHotelBusiness
 - Podcast, English: *The Hotel Business* - https://rss.com/podcasts/the-hotel-business/
-- Podcast, Chinese: *张小姐看酒店生意* - https://www.youtube.com/playlist?list=PLK66NvWFLv9U (also on Ximalaya and Xiaoyuzhou)
+- Podcast, Chinese: *张小姐看酒店生意* ("Hotel Business with Ms. Zhang") - search this name on Xiaoyuzhou, Apple Podcasts, Ximalaya or YouTube
 
 ## Licence
 

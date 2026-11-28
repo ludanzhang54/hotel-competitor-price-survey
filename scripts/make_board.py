@@ -37,7 +37,7 @@ def set_data_dir(p):
 
 WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-CAP = None           # optional absolute cap (--cap N): any price above it is a high-price room type. Off by default because it depends on the currency
+CAP = None           # optional absolute cap (--cap N): any price above it is a high-price room type. Default: 10000 when the archive currency is CNY (Ctrip), otherwise off
 SUITE_RATIO = 2.5    # multiple of the hotel’s own median above which a price is a high-price room type
 MIN_DAYS = 10        # with fewer normal-price days than this, the relative rule is not applied (only --cap, if set)
 BAR_SPAN = 20        # fixed bar scale: full bar = +/-20%, the same every run so boards can be compared
@@ -268,11 +268,14 @@ def gap_text(a, b):
 
 
 def main(home_arg=None):
+    global CAP
     load_short()
     arch = os.path.join(DATA, "archive")
     files = archive_files(arch)
     rows = build_comparison(arch)
     currency = archive_currency(files[-1]) if files else ""
+    if CAP is None and currency.upper() == "CNY":
+        CAP = 10000   # Ctrip boards are in CNY: above 10,000 is always a high-price room type (suites)
     occ, events = load_optional(DATA)
 
     # only draw hotels on the watch list, when hotels.csv exists
@@ -1127,6 +1130,7 @@ margin-right:5px;vertical-align:-1px}
              '<div class="fbox"><h3>Definitions</h3><ul>'
              '<li>The whole page uses the <b>median</b>, not the mean (a mean is pulled by one extreme price)</li>'
              '<li>"{}" = the middle value of the hotels with a normal price that day; the count is shown when it is short, and "—" appears when fewer than 2 hotels have a price</li>'
+             '<li>The number of hotels that can be compared changes every day, so this column read down the page is not a trend</li>'
              '<li>Every percentage is one number on the page divided by another, so you can check it</li>'
              '<li>Lowest bookable price under the same search conditions every run (1 room, 1 night, 1 adult); dates roll forward</li>'
              '</ul></div>'

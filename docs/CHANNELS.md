@@ -1,7 +1,7 @@
 # Ctrip guide
 
 This tool is built around **Ctrip (the mainland China site)**. The board itself reads one simple table, so prices from
-other sources can be imported as a CSV, but only the Ctrip collector in this repository has been tested by the author.
+other sources can be imported as a CSV, but the collector in this repository is for Ctrip only.
 Nothing else is claimed.
 
 ---

@@ -56,6 +56,6 @@ If a file is missing, that part of the board is simply left out.
 | `event` | `Countdown concert` |
 | `end_date` | optional; fills every day from `date` to `end_date` (at most 60 days) |
 
-**Price cap (optional):** `make_board.py --cap 5000` treats any price above that number as a high-price room type. It is off by default because the right number depends on the currency. Without it, only the relative rule applies (above 2.5 times the hotel's own median, once there are 10 normal days).
+**Price cap (optional):** `make_board.py --cap 5000` treats any price above that number as a high-price room type. For a CNY archive (Ctrip) it defaults to 10,000; for other currencies it is off unless you set it, because the right number depends on the currency. The relative rule always applies (above 2.5 times the hotel's own median, once there are 10 normal days).
 
 **`hotels.csv`** — `hotel,short_name`. When present, only these hotels are drawn, and `short_name` is used in tight spaces.
